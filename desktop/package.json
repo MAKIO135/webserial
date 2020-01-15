@@ -1,0 +1,42 @@
+{
+  "name": "webserial",
+  "version": "0.0.1",
+  "description": "Electron app to bring Serial communication to Web browsers through websockets.",
+  "homepage": "https://github.com/makio135/webserial#readme",
+  "main": "index.js",
+  "scripts": {
+    "start": "electron .",
+    "clean": "rm -r ~/Desktop/WebSerial-darwin-x64/ ; rm -r ~/Desktop/WebSerial-linux-x64/ ; rm -r ~/Desktop/WebSerial-win32-x64/ ; echo 'cleaned build location'",
+    "build_osx": "electron-packager . WebSerial --platform=darwin --arch=x64 --out ~/Desktop/ --overwrite --icon=icon.icns ; echo 'Built for OSX'",
+    "build_linux": "electron-packager . WebSerial --platform=linux  --arch=x64 --out ~/Desktop/ --overwrite --icon=icon.ico ; echo 'Built for LINUX'",
+    "build_win": "electron-packager . WebSerial --platform=win32  --arch=x64 --out ~/Desktop/ --overwrite --icon=icon.ico ; echo 'Built for WIN'",
+    "build": "npm run clean ; npm run build_osx ; npm run build_linux ; npm run build_win"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/makio135/webserial.git"
+  },
+  "keywords": [
+    "Serial",
+    "websocket",
+    "bridge",
+    "arduino",
+    "browser",
+    "communication"
+  ],
+  "author": "@makio135",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/makio135/webserial/issues"
+  },
+  "devDependencies": {
+    "electron": "^7.1.9",
+    "electron-rebuild": "^1.8.8"
+  },
+  "dependencies": {
+    "@serialport/parser-readline": "^8.0.6",
+    "express": "^4.17.1",
+    "serialport": "^8.0.6",
+    "socket.io": "^2.3.0"
+  }
+}
