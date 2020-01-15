@@ -29,7 +29,7 @@ The `webserial` Object exposes a few methods and properties:
     - `'connection'`: no argument is passed to the callback
     - `'disconnection'`: no argument is passed to the callback
     - `'data'`: callback takes one argument, the data received
-- `write(dataString)`: method use to send data to the microcontrolller
+- `.write(dataString)`: method use to send data to the microcontrolller
 
 ```html
 <body>
