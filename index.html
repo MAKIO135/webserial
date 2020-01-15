@@ -8,7 +8,6 @@
     <link rel="stylesheet"
       href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.17.1/build/styles/default.min.css">
     <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.17.1/build/highlight.min.js"></script>
-    <script src="http://makio135.com/webserial/client/webserial.min.js"></script>
 </head>
 <body class="container">
     <h1 id="webserial">WebSerial</h1>
@@ -123,5 +122,12 @@
     <p>🙏🙏🙏</p>
 
     <p style="text-align:right;"><a href="https://twitter.com/makio135">@Makio135</a></p>
+
+    <script src="http://makio135.com/webserial/client/webserial.min.js"></script>
+    <script>
+        webserial.on('connection', () => console.log('Device connected'))
+        webserial.on('disconnection', () => console.log('Device disconnected'))
+        webserial.on('data', data => console.log(data))
+    </script>
 </body>
 </html>
