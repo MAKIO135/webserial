@@ -1,0 +1,47 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Hello World!</title>
+    <!-- https://electronjs.org/docs/tutorial/security#csp-meta-tag -->
+    <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
+
+    <style>
+        body{
+            -webkit-app-region: drag;
+            cursor: move;
+        }
+    </style>
+</head>
+<body>
+    <select id="port">
+        <option value="">--Select port--</option>
+    </select>
+
+    <select id="baudrate">
+        <option value="300">300</option>
+        <option value="1200">1200</option>
+        <option value="2400">2400</option>
+        <option value="4800">4800</option>
+        <option value="9600" selected>9600</option>
+        <option value="19200">19200</option>
+        <option value="38400">38400</option>
+        <option value="57600">57600</option>
+        <option value="74880">74880</option>
+        <option value="115200">115200</option>
+        <option value="230400">230400</option>
+        <option value="250000">250000</option>
+        <option value="500000">500000</option>
+        <option value="1000000">1000000</option>
+        <option value="2000000">2000000</option>
+    </select>
+
+    <button id="connect">Connect</button>
+
+    <!-- show status -->
+    <!-- display -->
+    <!-- rescann -->
+
+    <script src="js/main.js"></script>
+</body>
+</html>
+
