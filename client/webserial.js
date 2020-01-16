@@ -1,19 +1,29 @@
 class WebSerial {
     constructor(port = 8135, host = 'http://localhost') {
         this.events = {}
-
-        this.isConnected = false
+        this.isServerConnected = false
+        this.isDeviceConnected = false
         this.data = ''
         this.log = false
         
-        this.on('connection', () => {
-            this.isConnected = true
-            if(this.log) console.log('Serial device connected')
+        this.on('server-connect', () => {
+            this.isServerConnected = true
+            if(this.log) console.log('Connected to websocket server')
         })
     
-        this.on('disconnection', () => {
-            this.isConnected = false
-            if(this.log) console.log('Serial device disconnected')
+        this.on('server-disconnect', () => {
+            this.isServerConnected = false
+            if(this.log) console.log('Disconnected from websocket server')
+        })
+        
+        this.on('device-connect', () => {
+            this.isDeviceConnected = true
+            if(this.log) console.log('Connected to websocket server')
+        })
+    
+        this.on('device-disconnect', () => {
+            this.isDeviceConnected = false
+            if(this.log) console.log('Disconnected from websocket server')
         })
         
         this.on('data', data => {
@@ -25,9 +35,12 @@ class WebSerial {
         script.src = `${host}:${port}/socket.io/socket.io.js`
         script.addEventListener('load', e => {
             const socket = io(`${host}:${port}`)
-            socket.on('connection', () => this.dispatchEvent('connection'))
-            socket.on('disconnection', () => this.dispatchEvent('disconnection'))
+            socket.on('connect', () => this.dispatchEvent('server-connect'))
+            socket.on('disconnect', () => this.dispatchEvent('server-disconnect'))
+            socket.on('device-connect', () => this.dispatchEvent('device-connect'))
+            socket.on('device-disconnect', () => this.dispatchEvent('device-disconnect'))
             socket.on('data', data => this.dispatchEvent('data', data))
+
             this.on('write', data => {
                 if(this.log) console.log(`writing data: ${data}`)
                 socket.emit('write', data)
