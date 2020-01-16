@@ -23,15 +23,17 @@ serialConnect.addEventListener('click', e => {
     if(serialPortSelect.value) {
         const connection = app.connectPort(serialPortSelect.value, parseInt(serialBaudrateSelect.value))
         serialPort = connection.serialPort
-        parser = connection.parser
-
-        // serialPort.on('open', () => {
-            // console.log(`${serialPortSelect.value} open`)
+        serialPort.on('open', () => {
+            console.log(`${serialPortSelect.value} open`)
+        })
+        serialPort.on('error', err => {
+            console.log('Error: ', err.message)
+        })
         
-            parser.on('data', data => {
-                serialData.innerText = data
-                app.emitMessage(data)
-            })
-        // })
+        parser = connection.parser
+        parser.on('data', data => {
+            serialData.innerText = data
+            app.emitMessage(data)
+        })
     }
 })
