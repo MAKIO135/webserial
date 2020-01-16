@@ -1,66 +1,68 @@
-const webserial = (() => {
-    class Event {
-        constructor(name) {
-            this.name = name
-            this.callbacks = []
-        }
+class WebSerial {
+    constructor(port = 8135, host = 'http://localhost') {
+        this.events = {}
+
+        this.isConnected = false
+        this.data = ''
         
-        registerCallback(callback) {
-            this.callbacks.push(callback)
-        }
-    }
+        this.on('connection', () => {
+            this.isConnected = true
+            console.log('Serial device connected')
+        })
     
-    class Reactor {
-        constructor() {
-            this.events = {}
-        }
+        this.on('disconnection', () => {
+            this.isConnected = false
+            console.log('Serial device disconnected')
+        })
         
-        registerEvent(eventName) {
-            const event = new Event(eventName)
-            this.events[eventName] = event
-        }
-        
-        dispatchEvent(eventName, eventArgs) {
-            if(this.events[eventName]) this.events[eventName].callbacks.forEach(callback => {
-                callback(eventArgs)
+        this.on('data', data => {
+            this.data = data
+            console.log(`data received: ${data}`)
+        })
+
+        const script = document.createElement('script')
+        script.src = `${host}:${port}/socket.io/socket.io.js`
+        script.addEventListener('load', e => {
+            const socket = io(`${host}:${port}`)
+            socket.on('connection', () => this.dispatchEvent('connection'))
+            socket.on('disconnection', () => this.dispatchEvent('disconnection'))
+            socket.on('data', data => this.dispatchEvent('data', data))
+            this.on('write', data => {
+                console.log(`writing data: ${data}`)
+                socket.emit('write', data)
             })
+        })
+        document.head.appendChild(script)
+    }
+
+    registerEvent(eventName) {
+        class Event {
+            constructor(name) {
+                this.name = name
+                this.callbacks = []
+            }
+            
+            registerCallback(callback) {
+                this.callbacks.push(callback)
+            }
         }
-        
-        on(eventName, callback) {
-            if(!this.events[eventName]) this.registerEvent(eventName)
-            this.events[eventName].registerCallback(callback)
-        }
+
+        const event = new Event(eventName)
+        this.events[eventName] = event
     }
     
-    const webserial = new Reactor()
+    dispatchEvent(eventName, eventArgs) {
+        if(this.events[eventName]) this.events[eventName].callbacks.forEach(callback => {
+            callback(eventArgs)
+        })
+    }
+    
+    on(eventName, callback) {
+        if(!this.events[eventName]) this.registerEvent(eventName)
+        this.events[eventName].registerCallback(callback)
+    }
 
-    webserial.isConnected = false
-    webserial.data = ''
-    
-    webserial.on('connection', () => {
-        webserial.isConnected = true
-        console.log('Serial device connected')
-    })
-
-    webserial.on('disconnection', () => {
-        webserial.isConnected = false
-        console.log('Serial device disconnected')
-    })
-    
-    webserial.on('data', data => {
-        webserial.data = data
-        console.log(`data received: ${data}`)
-    })
-    
-    const script = document.createElement('script')
-    script.src = 'http://localhost:8135/socket.io/socket.io.js'
-    script.addEventListener('load', e => {
-        const socket = io('http://localhost:8135')
-        socket.on('connection', () => webserial.dispatchEvent('connection'))
-        socket.on('disconnection', () => webserial.dispatchEvent('disconnection'))
-        socket.on('data', data => webserial.dispatchEvent('data', data))
-    })
-    document.head.appendChild(script)
-    
-    return webserial
-})()
+    write(data) {
+        this.dispatchEvent('write', data)
+    }
+}
