@@ -35,7 +35,7 @@ The `webserial` Object exposes a few methods and properties:
 <body>
     <script src="https://makio135.com/webserial/webserial.js"></script>
     <script>
-        const webserial = new WebSerial();
+        const webserial = new WebSerial()
         webserial.on('connection', () => console.log('Device connected'))
         webserial.on('disconnection', () => console.log('Device disconnected'))
         webserial.on('data', data => console.log(data))
@@ -50,15 +50,15 @@ Or for use in a more direct mode:
 ```html
 <!-- Example using p5js https://p5js.org/ -->
 <body>
-    <script src="https://makio135.com/webserial/webserial.js"></script>
+    <script src="http://makio135.com/webserial/client/webserial.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/p5@0.10.2/lib/p5.js"></script>
 
     <script>
-        let webserial;
+        let webserial
 
         function setup() {
             createCanvas(400, 400)
-            webserial = new WebSerial();
+            webserial = new WebSerial()
         }
 
         function draw() {
@@ -77,4 +77,5 @@ WebSerial would not be possible without these great projects:
 - [serialport](https://serialport.io/)
 - [express](https://expressjs.com/)
 - [socket.io](https://socket.io/)  
+
 🙏🙏🙏

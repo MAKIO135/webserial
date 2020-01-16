@@ -4,20 +4,21 @@ class WebSerial {
 
         this.isConnected = false
         this.data = ''
+        this.log = false
         
         this.on('connection', () => {
             this.isConnected = true
-            console.log('Serial device connected')
+            if(this.log) console.log('Serial device connected')
         })
     
         this.on('disconnection', () => {
             this.isConnected = false
-            console.log('Serial device disconnected')
+            if(this.log) console.log('Serial device disconnected')
         })
         
         this.on('data', data => {
             this.data = data
-            console.log(`data received: ${data}`)
+            if(this.log) console.log(`data received: ${data}`)
         })
 
         const script = document.createElement('script')
@@ -28,7 +29,7 @@ class WebSerial {
             socket.on('disconnection', () => this.dispatchEvent('disconnection'))
             socket.on('data', data => this.dispatchEvent('data', data))
             this.on('write', data => {
-                console.log(`writing data: ${data}`)
+                if(this.log) console.log(`writing data: ${data}`)
                 socket.emit('write', data)
             })
         })
@@ -52,9 +53,11 @@ class WebSerial {
     }
     
     dispatchEvent(eventName, eventArgs) {
-        if(this.events[eventName]) this.events[eventName].callbacks.forEach(callback => {
-            callback(eventArgs)
-        })
+        if(this.events[eventName]) {
+            this.events[eventName].callbacks.forEach(callback => {
+                callback(eventArgs)
+            })
+        }
     }
     
     on(eventName, callback) {
