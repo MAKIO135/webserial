@@ -66,7 +66,7 @@ http.listen(port, () => console.log(`listening on ${port}`))
 // socket
 io.on('connection', socket => {
     socket.emit('connection', { msg: 'Connected to server' })
-    socket.on('data', dataString => serialPort.write(`${dataString}`))
+    socket.on('write', dataString => serialPort.write(`${dataString}`))
     socket.on('disconnect', () => {})
 })
 
