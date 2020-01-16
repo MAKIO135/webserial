@@ -1,13 +1,16 @@
 const { app } = require('electron').remote
 
-let serialPort
-let parser
 const serialPortSelect = document.querySelector('#serial-port')
 const serialBaudrateSelect = document.querySelector('#serial-baudrate')
 const serialConnect = document.querySelector('#serial-connect')
 const serialData = document.querySelector('#serial-data')
+const serialStatus = document.querySelector('#serial-status')
 
-app.scannPorts().then(ports => {
+const serverPortSelect = document.querySelector('#server-port')
+const serverData = document.querySelector('#server-data')
+const serverStatus = document.querySelector('#server-status')
+
+app.reactor.on('device-scanned', ports => {
     serialPortSelect.innerHTML = `<option value="">--Select port--</option>`
 
     ports.forEach(port => {
@@ -21,19 +24,22 @@ app.scannPorts().then(ports => {
 
 serialConnect.addEventListener('click', e => {
     if(serialPortSelect.value) {
-        const connection = app.connectPort(serialPortSelect.value, parseInt(serialBaudrateSelect.value))
-        serialPort = connection.serialPort
-        serialPort.on('open', () => {
-            console.log(`${serialPortSelect.value} open`)
-        })
-        serialPort.on('error', err => {
-            console.log('Error: ', err.message)
-        })
-        
-        parser = connection.parser
-        parser.on('data', data => {
-            serialData.innerText = data
-            app.emitMessage(data)
-        })
+        app.reactor.dispatchEvent('device-connect', { path: serialPortSelect.value, baudRate: parseInt(serialBaudrateSelect.value) })
     }
 })
+
+app.reactor.on('device-connected', ({ path, baudRate }) => {
+    console.log(`device connected on ${path} at ${baudRate} bds`)
+    // serialPortSelect.value = path
+    // serialBaudrateSelect.value = baudRate
+})
+
+app.reactor.on('device-data', data => serialData.innerText = data)
+
+app.reactor.on('server-started', port => serverPortSelect.value = port)
+
+app.reactor.on('client-connected', () => console.log('client-connected'))
+app.reactor.on('client-disconnected', () => console.log('client-disconnected'))
+
+app.reactor.dispatchEvent('server-start', app.port)
+app.reactor.dispatchEvent('device-scann')

@@ -4,11 +4,15 @@ const Readline = require('@serialport/parser-readline')
 const expressApp = require('express')()
 const http = require('http').createServer(expressApp)
 const io = require('socket.io')(http)
+const { Reactor } = require('./js/Reactor')
 
-let win
+app.reactor = new Reactor()
+app.win = null
+app.port = 8135
+app.serialPort = null
 
-function createWindow () {
-    win = new BrowserWindow({
+const createWindow = () => {
+    app.win = new BrowserWindow({
         width: 500,
         height: 200,
 		minWidth: 250,
@@ -24,17 +28,14 @@ function createWindow () {
         }
     })
     
-    win.loadFile('index.html')
+    app.win.loadFile('index.html')
 
-    // Ouvre les DevTools.
-    win.webContents.openDevTools()
+    app.win.webContents.openDevTools()
     
-    win.on('closed', () => {
-        win = null
+    app.win.on('closed', () => {
+        app.win = null
     })
 }
-
-app.on('ready', createWindow)
 
 app.on('window-all-closed', () => {
     if (process.platform !== 'darwin') {
@@ -43,31 +44,57 @@ app.on('window-all-closed', () => {
 })
 
 app.on('activate', () => {
-    if (win === null) {
+    if (app.win === null) {
         createWindow()
     }
 })
 
-// serial port
-let serialPort
-app.scannPorts = () => SerialPort.list()
-
-app.connectPort = (path, baudRate) => {
-    serialPort = new SerialPort( path, { baudRate })
-    const parser = serialPort.pipe(new Readline())
-    return { serialPort, parser }
-}
-
-// express
-const port = 8135
-expressApp.get('/', (req, res) => res.send('YO'))
-http.listen(port, () => console.log(`listening on ${port}`))
-
-// socket
-io.on('connection', socket => {
-    socket.emit('connection', { msg: 'Connected to server' })
-    socket.on('write', dataString => serialPort.write(`${dataString}`))
-    socket.on('disconnect', () => {})
+app.reactor.on('device-scann', () => {
+    SerialPort.list().then(ports => app.reactor.dispatchEvent('device-scanned', ports))
 })
 
-app.emitMessage = msg => io.emit('data', msg)
+app.reactor.on('device-connect', ({ path, baudRate }) => {
+    if(app.serialPort !== null) app.serialPort.close()
+    
+    app.serialPort = new SerialPort( path, { baudRate })
+    app.parser = app.serialPort.pipe(new Readline())
+    
+    app.serialPort.on('open', () => {
+        console.log(`port ${path} open`)
+    })
+
+    app.serialPort.on('error', err => {
+        console.log('Error: ', err.message)
+    })
+    
+    app.parser.on('data', data => {
+        app.reactor.dispatchEvent('device-data', data)
+        app.reactor.dispatchEvent('server-emit', data)
+    })
+
+    app.reactor.dispatchEvent('device-connected', { path, baudRate })
+})
+
+app.reactor.on('server-start', port => {
+    app.port = port
+    http.listen(app.port, () => {
+        console.log(`listening on ${app.port}`)
+        app.reactor.dispatchEvent('server-started', app.port)
+    })
+})
+
+io.on('connection', socket => {
+    app.reactor.dispatchEvent('client-connected')
+
+    socket.on('write', dataString => app.serialPort.write(`${dataString}`))
+
+    socket.on('disconnect', () => {
+        if(Object.keys(io.sockets.connected).length == 0) {
+            app.reactor.dispatchEvent('client-disconnected')
+        }
+    })
+})
+
+app.reactor.on('server-emit', msg => io.emit('data', msg))
+
+app.on('ready', createWindow)
