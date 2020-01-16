@@ -19,7 +19,7 @@ Connect your microcontroller.
 Select the `port` and `baudrate` for your device, and click `connect`.  
 On your web page, add the link to this script:
 ```html
-<script src="https://makio135.com/webserial/client/webserial.js"></script>
+<script src="http://makio135.com/webserial/client/webserial.js"></script>
 ```
 You now have access to the `Webserial` Class.
 
@@ -33,7 +33,7 @@ The `webserial` Object exposes a few methods and properties:
 
 ```html
 <body>
-    <script src="https://makio135.com/webserial/webserial.js"></script>
+    <script src="http://makio135.com/webserial/client/webserial.js"></script>
     <script>
         const webserial = new WebSerial()
         webserial.on('connection', () => console.log('Device connected'))
