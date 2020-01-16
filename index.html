@@ -125,6 +125,7 @@
 
     <script src="http://makio135.com/webserial/client/webserial.min.js"></script>
     <script>
+        const webserial = new WebSerial()
         webserial.on('connection', () => console.log('Device connected'))
         webserial.on('disconnection', () => console.log('Device disconnected'))
         webserial.on('data', data => console.log(data))
