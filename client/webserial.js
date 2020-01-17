@@ -3,7 +3,7 @@ class WebSerial {
         this.events = {}
         this.isServerConnected = false
         this.isDeviceConnected = false
-        this.data = ''
+        this.data = undefined
         this.log = false
         
         this.on('server-connect', () => {
