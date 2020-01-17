@@ -40,7 +40,6 @@ app.reactor.on('serialport-data', dataString => {
 
 serverPortSelect.addEventListener('change', e => {
     const port = parseInt(serverPortSelect.value)
-    console.log(port, port > 1000)
     if(port > 1000) app.reactor.dispatchEvent('server-start', port)
 })
 
