@@ -30,7 +30,7 @@ const createWindow = () => {
     
     app.win.loadFile('index.html')
 
-    app.win.webContents.openDevTools()
+    // app.win.webContents.openDevTools()
     
     app.win.on('closed', () => {
         app.win = null
@@ -83,7 +83,7 @@ app.reactor.on('server-start', port => {
         app.port = port
         http = require('http').createServer(expressApp)
         io = require('socket.io')(http)
-        
+
         io.on('connection', socket => {
             app.reactor.dispatchEvent('client-connected', Object.keys(io.sockets.connected).length)
             
