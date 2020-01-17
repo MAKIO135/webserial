@@ -16,12 +16,12 @@ class WebSerial {
             if(this.log) console.log('Disconnected from websocket server')
         })
         
-        this.on('device-connect', () => {
+        this.on('serial-connect', () => {
             this.isDeviceConnected = true
             if(this.log) console.log('Connected to websocket server')
         })
     
-        this.on('device-disconnect', () => {
+        this.on('serial-disconnect', () => {
             this.isDeviceConnected = false
             if(this.log) console.log('Disconnected from websocket server')
         })
@@ -37,8 +37,8 @@ class WebSerial {
             const socket = io(`${host}:${port}`)
             socket.on('connect', () => this.dispatchEvent('server-connect'))
             socket.on('disconnect', () => this.dispatchEvent('server-disconnect'))
-            socket.on('device-connect', () => this.dispatchEvent('device-connect'))
-            socket.on('device-disconnect', () => this.dispatchEvent('device-disconnect'))
+            socket.on('serial-connect', () => this.dispatchEvent('serial-connect'))
+            socket.on('serial-disconnect', () => this.dispatchEvent('serial-disconnect'))
             socket.on('data', data => this.dispatchEvent('data', data))
 
             this.on('write', data => {
