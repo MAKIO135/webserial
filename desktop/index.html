@@ -7,6 +7,8 @@
     <link rel="stylesheet" href="css/style.min.css">
 </head>
 <body>
+    <h2>Serial</h2>
+
     <div id="serial">
         <select id="serial-port">
             <option value="">--Select port--</option>
@@ -29,17 +31,20 @@
             <option value="1000000">1000000</option>
             <option value="2000000">2000000</option>
         </select>
-    
-        <button id="serial-connect">Connect</button>
 
-        <p id="serial-data"></p>
-        <p id="serial-status"></p>
+        <p>status: <span id="serial-status">closed</span></p>
+        <p>data: <span id="serial-data"></span></p>
     </div>
+
+    <hr>
     
+    <h2>Server</h2>
+
     <div id="server">
-        <input type="text" id="server-port" value="">
-        <p id="server-data"></p>
-        <p id="server-status"></p>
+        <p>port: <input type="number" id="server-port" value=""></p>
+        <p>status: <span id="server-status">not started</span></p>
+        <p>clients: <span id="server-clients">0</span></p>
+        <p>data: <span id="server-data"></span></p>
     </div>
 
     <script src="js/main.js"></script>

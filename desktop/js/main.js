@@ -2,15 +2,15 @@ const { app } = require('electron').remote
 
 const serialPortSelect = document.querySelector('#serial-port')
 const serialBaudrateSelect = document.querySelector('#serial-baudrate')
-const serialConnect = document.querySelector('#serial-connect')
 const serialData = document.querySelector('#serial-data')
 const serialStatus = document.querySelector('#serial-status')
 
 const serverPortSelect = document.querySelector('#server-port')
-const serverData = document.querySelector('#server-data')
 const serverStatus = document.querySelector('#server-status')
+const serverClients = document.querySelector('#server-clients')
+const serverData = document.querySelector('#server-data')
 
-app.reactor.on('device-scanned', ports => {
+app.reactor.on('serialport-scanned', ports => {
     serialPortSelect.innerHTML = `<option value="">--Select port--</option>`
 
     ports.forEach(port => {
@@ -22,24 +22,43 @@ app.reactor.on('device-scanned', ports => {
     })
 })
 
-serialConnect.addEventListener('click', e => {
-    if(serialPortSelect.value) {
-        app.reactor.dispatchEvent('device-connect', { path: serialPortSelect.value, baudRate: parseInt(serialBaudrateSelect.value) })
-    }
+const connectDevice = () => {
+    const path = serialPortSelect.value
+    const baudRate = parseInt(serialBaudrateSelect.value)
+    if(path && baudRate) app.reactor.dispatchEvent('serialport-open', { path, baudRate })
+}
+serialPortSelect.addEventListener('change', connectDevice)
+serialBaudrateSelect.addEventListener('change', connectDevice)
+
+app.reactor.on('serialport-opened', ({ path, baudRate }) => {
+    serialStatus.innerText = 'OK'
 })
 
-app.reactor.on('device-connected', ({ path, baudRate }) => {
-    console.log(`device connected on ${path} at ${baudRate} bds`)
-    // serialPortSelect.value = path
-    // serialBaudrateSelect.value = baudRate
+app.reactor.on('serialport-data', dataString => {
+    serialData.innerText = dataString
 })
 
-app.reactor.on('device-data', data => serialData.innerText = data)
+serverPortSelect.addEventListener('change', e => {
+    const port = parseInt(serverPortSelect.value)
+    console.log(port, port > 1000)
+    if(port > 1000) app.reactor.dispatchEvent('server-start', port)
+})
 
-app.reactor.on('server-started', port => serverPortSelect.value = port)
+app.reactor.on('server-started', port => {
+    serverPortSelect.value = port
+    serverStatus.innerText = `listening on ${port}`
+})
 
-app.reactor.on('client-connected', () => console.log('client-connected'))
-app.reactor.on('client-disconnected', () => console.log('client-disconnected'))
+app.reactor.on('server-data', dataString => {
+    serverData.innerText = dataString
+})
+
+const updateClients = n => {
+    serverClients.innerText = `${n} clients connected`
+}
+app.reactor.on('client-connected', updateClients)
+app.reactor.on('client-disconnected', updateClients)
+
 
 app.reactor.dispatchEvent('server-start', app.port)
-app.reactor.dispatchEvent('device-scann')
+app.reactor.dispatchEvent('serialport-scann')
