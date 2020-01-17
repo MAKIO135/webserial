@@ -1,5 +1,5 @@
 class WebSerial {
-    constructor(port = 8135, host = 'http://localhost') {
+    constructor({ host = 'http://localhost', port = 8135 }) {
         this.events = {}
         this.isServerConnected = false
         this.isDeviceConnected = false
