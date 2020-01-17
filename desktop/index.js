@@ -65,7 +65,7 @@ app.reactor.on('serialport-open', ({ path, baudRate }) => {
     
     app.serialPort.on('error', err => {
         console.log('Error: ', err.message)
-        app.reactor.dispatchEvent('port-opened', ({ path, baudRate }))
+        app.reactor.dispatchEvent('serialport-opened', ({ path, baudRate }))
     })
     
     app.parser.on('data', data => {
