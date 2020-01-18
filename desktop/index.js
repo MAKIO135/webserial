@@ -69,6 +69,8 @@ app.initEvents = () => {
     })
     
     app.reactor.on('server-emit', msg => io.emit('data', msg))
+    app.reactor.on('serialport-opened', () => io.emit('serialport-update', true))
+    app.reactor.on('serialport-closed', () => io.emit('serialport-update', false))
 
     app.serialChecker = setInterval(() => {
         SerialPort.list().then(ports => {
