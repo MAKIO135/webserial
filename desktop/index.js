@@ -75,7 +75,6 @@ app.reactor.on('serialport-open', ({ path, baudRate }) => {
 })
 
 app.reactor.on('server-start', port => {
-    console.log("server-start")
     io.close()
     http.close(() => {
         console.log(`server closed, now starting on ${port}`)
