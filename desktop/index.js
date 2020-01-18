@@ -18,7 +18,7 @@ app.initEvents = () => {
     app.reactor = new Reactor()
 
     app.reactor.on('serialport-open', ({ path, baudRate }) => {
-        if(app.serialPort !== null) app.serialPort.close()
+        app.reactor.dispatchEvent('serialport-close')
     
         app.serialPort = new SerialPort( path, { baudRate })
         app.parser = app.serialPort.pipe(new Readline())
@@ -33,6 +33,11 @@ app.initEvents = () => {
         })
     
         app.reactor.dispatchEvent('serialport-opened')
+    })
+    
+    app.reactor.on('serialport-close', () => {
+        if(app.serialPort !== null) app.serialPort.close()
+        app.reactor.dispatchEvent('serialport-closed')
     })
     
     app.reactor.on('server-start', port => {
