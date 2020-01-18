@@ -45,6 +45,7 @@ app.reactor.on('serialport-opened', () => {
 
 app.reactor.on('serialport-closed', () => {
     serialStatus.innerText = 'closed'
+    serialData.innerText = ''
     serialPortSelect.selectedIndex = 0
 })
 
