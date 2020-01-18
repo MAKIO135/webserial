@@ -31,11 +31,16 @@ app.reactor.on('serialport-scanned', ports => {
 })
 
 const connectSerial = () => {
-    const path = serialPortSelect.value
-    const baudRate = parseInt(serialBaudrateSelect.value)
-    if(path && baudRate) {
-        serialData.innerText = ''
-        app.reactor.dispatchEvent('serialport-open', { path, baudRate })
+    if(serialPortSelect.selectedIndex === 0) {
+        app.reactor.dispatchEvent('serialport-close')
+    }
+    else {
+        const path = serialPortSelect.value
+        const baudRate = parseInt(serialBaudrateSelect.value)
+        if(path && baudRate) {
+            serialData.innerText = ''
+            app.reactor.dispatchEvent('serialport-open', { path, baudRate })
+        }
     }
 }
 serialPortSelect.addEventListener('change', connectSerial)
