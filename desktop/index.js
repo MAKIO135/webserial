@@ -24,7 +24,6 @@ app.initEvents = () => {
         app.parser = app.serialPort.pipe(new Readline())
         
         app.serialPort.on('error', err => {
-            console.log('Error: ', err.message)
             app.reactor.dispatchEvent('serialport-closed')
         })
         
