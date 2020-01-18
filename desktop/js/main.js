@@ -69,15 +69,15 @@ serverPortSelect.addEventListener('change', e => {
 
 app.reactor.on('server-started', port => {
     serverPortSelect.value = port
-    serverStatus.innerText = `listening on ${port}`
+    serverStatus.innerText = `OK`
 })
 
 app.reactor.on('server-data', dataString => {
     serverData.innerText = dataString
 })
 
-const updateClients = n => {
-    serverClients.innerText = `${n} clients connected`
-}
-app.reactor.on('client-connected', updateClients)
-app.reactor.on('client-disconnected', updateClients)
+app.reactor.on('client-update', n => {
+    serverClients.innerText = n
+})
+
+app.reactor.dispatchEvent('server-start', app.serverPort)

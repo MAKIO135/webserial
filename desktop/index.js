@@ -43,7 +43,7 @@ app.initEvents = () => {
             io = require('socket.io')(http)
     
             io.on('connection', socket => {
-                app.reactor.dispatchEvent('client-connected', Object.keys(io.sockets.connected).length)
+                app.reactor.dispatchEvent('client-update', Object.keys(io.sockets.connected).length)
                 
                 socket.on('write', dataString => {
                     if(app.serialPort) app.serialPort.write(`${dataString}\n`)
@@ -51,7 +51,7 @@ app.initEvents = () => {
                 })
                 
                 socket.on('disconnect', () => {
-                    app.reactor.dispatchEvent('client-connected', Object.keys(io.sockets.connected).length)
+                    app.reactor.dispatchEvent('client-update', Object.keys(io.sockets.connected).length)
                 })
             })
     
@@ -63,8 +63,6 @@ app.initEvents = () => {
     })
     
     app.reactor.on('server-emit', msg => io.emit('data', msg))
-
-    app.reactor.dispatchEvent('server-start', app.serverPort)
 
     app.serialChecker = setInterval(() => {
         SerialPort.list().then(ports => {
