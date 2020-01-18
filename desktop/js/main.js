@@ -22,7 +22,7 @@ app.reactor.on('serialport-scanned', ports => {
     })
 })
 
-const connectDevice = () => {
+const connectSerial = () => {
     const path = serialPortSelect.value
     const baudRate = parseInt(serialBaudrateSelect.value)
     if(path && baudRate) app.reactor.dispatchEvent('serialport-open', { path, baudRate })
