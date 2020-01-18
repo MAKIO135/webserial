@@ -37,6 +37,7 @@ app.initEvents = () => {
     
     app.reactor.on('serialport-close', () => {
         if(app.serialPort !== null) app.serialPort.close()
+        app.serialPort = null
         app.reactor.dispatchEvent('serialport-closed')
     })
     
