@@ -1,6 +1,6 @@
 {
   "name": "webserial",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Electron app to bring Serial communication to Web browsers through websockets.",
   "homepage": "https://github.com/makio135/webserial#readme",
   "main": "index.js",
