@@ -8,9 +8,9 @@ const { Reactor } = require('./js/Reactor')
 
 app.reactor = null
 app.win = null
-app.serverPort = 8135
 app.serialChecker = null
 app.serialPort = null
+app.serverPort = 8135
 
 app.initEvents = () => {
     if(app.serialChecker) clearInterval(app.serialChecker)
