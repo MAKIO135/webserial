@@ -14,6 +14,8 @@ const serverData = document.querySelector('#server-data')
 
 app.reactor.on('serialport-scanned', ports => {
     if(ports.length !== serialPortSelect.options.length - 1) {
+        const selectedPort = serialPortSelect.selectedOptions[0]
+
         serialPortSelect.innerHTML = `<option value="">--Select port--</option>`
 
         ports.forEach(port => {
@@ -23,6 +25,8 @@ app.reactor.on('serialport-scanned', ports => {
             option.value = path
             serialPortSelect.appendChild(option)
         })
+
+        serialPortSelect.selectedIndex = Math.max(0, [...serialPortSelect.options].findIndex(option => option.value === selectedPort.value))
     }
 })
 
