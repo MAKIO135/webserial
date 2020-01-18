@@ -1,5 +1,7 @@
 const { app } = require('electron').remote
 
+app.initEvents()
+
 const serialPortSelect = document.querySelector('#serial-port')
 const serialBaudrateSelect = document.querySelector('#serial-baudrate')
 const serialData = document.querySelector('#serial-data')
@@ -11,27 +13,39 @@ const serverClients = document.querySelector('#server-clients')
 const serverData = document.querySelector('#server-data')
 
 app.reactor.on('serialport-scanned', ports => {
-    serialPortSelect.innerHTML = `<option value="">--Select port--</option>`
+    if(ports.length !== serialPortSelect.options.length - 1) {
+        serialPortSelect.innerHTML = `<option value="">--Select port--</option>`
 
-    ports.forEach(port => {
-        const option = document.createElement('option')
-        const { path, manufacturer } = port
-        option.innerText = path + (manufacturer ? ` ${manufacturer}` : '')
-        option.value = path
-        serialPortSelect.appendChild(option)
-    })
+        ports.forEach(port => {
+            const option = document.createElement('option')
+            const { path, manufacturer } = port
+            option.innerText = path + (manufacturer ? ` ${manufacturer}` : '')
+            option.value = path
+            serialPortSelect.appendChild(option)
+        })
+    }
 })
 
 const connectSerial = () => {
     const path = serialPortSelect.value
     const baudRate = parseInt(serialBaudrateSelect.value)
-    if(path && baudRate) app.reactor.dispatchEvent('serialport-open', { path, baudRate })
+    if(path && baudRate) {
+        serialData.innerText = ''
+        app.reactor.dispatchEvent('serialport-open', { path, baudRate })
+    }
 }
-serialPortSelect.addEventListener('change', connectDevice)
-serialBaudrateSelect.addEventListener('change', connectDevice)
+serialPortSelect.addEventListener('change', connectSerial)
+serialBaudrateSelect.addEventListener('change', connectSerial)
 
-app.reactor.on('serialport-opened', ({ path, baudRate }) => {
-    serialStatus.innerText = 'OK'
+app.reactor.on('serialport-opened', () => {
+    if(serialStatus.innerText !== 'OK') {
+        serialStatus.innerText = 'OK'
+    }
+})
+
+app.reactor.on('serialport-closed', () => {
+    serialStatus.innerText = 'closed'
+    serialPortSelect.selectedIndex = 0
 })
 
 app.reactor.on('serialport-data', dataString => {
@@ -57,7 +71,3 @@ const updateClients = n => {
 }
 app.reactor.on('client-connected', updateClients)
 app.reactor.on('client-disconnected', updateClients)
-
-
-app.reactor.dispatchEvent('server-start', app.port)
-app.reactor.dispatchEvent('serialport-scann')
