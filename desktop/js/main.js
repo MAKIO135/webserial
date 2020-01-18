@@ -76,6 +76,7 @@ app.reactor.on('server-data', dataString => {
 
 app.reactor.on('client-update', n => {
     serverClients.innerText = n
+    if(serverClients.innerText === 0) serverData.innerText = ''
 })
 
 app.reactor.dispatchEvent('server-start', app.serverPort)
