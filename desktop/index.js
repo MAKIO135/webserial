@@ -106,8 +106,6 @@ const createWindow = () => {
     
     app.win.loadFile('index.html')
 
-    app.win.webContents.openDevTools()
-    
     app.win.on('closed', () => {
         app.win = null
     })
