@@ -1,29 +1,18 @@
 class WebSerial {
-    constructor({ host = 'http://localhost', port = 8135 }) {
+    constructor({ host = 'http://localhost', port = 8135, log = false }) {
         this.events = {}
-        this.isServerConnected = false
-        this.isSerialConnected = false
+        this.log = log
         this.data = undefined
-        this.log = false
+        this.isConnected = false
         
-        this.on('server-connect', () => {
-            this.isServerConnected = true
-            if(this.log) console.log('Connected to websocket server')
-        })
-    
-        this.on('server-disconnect', () => {
-            this.isServerConnected = false
-            if(this.log) console.log('Disconnected from websocket server')
+        this.on('server-update', status => {
+            if(this.log) console.log(status ? 'Connected to websocket server' : 'Disconnected from websocket server')
         })
         
-        this.on('serial-connect', () => {
-            this.isSerialConnected = true
-            if(this.log) console.log('Connected to websocket server')
-        })
-    
-        this.on('serial-disconnect', () => {
-            this.isSerialConnected = false
-            if(this.log) console.log('Disconnected from websocket server')
+        this.on('serialport-update', status => {
+            this.isConnected = status
+            this.dispatchEvent(this.isConnected ? 'connect' : 'disconnect')
+            if(this.log) console.log(this.isConnected ? 'Connected to Serial port' : 'Disconnected from Serial port')
         })
         
         this.on('data', data => {
@@ -35,14 +24,21 @@ class WebSerial {
         script.src = `${host}:${port}/socket.io/socket.io.js`
         script.addEventListener('load', e => {
             const socket = io(`${host}:${port}`)
-            socket.on('connect', () => this.dispatchEvent('server-connect'))
-            socket.on('disconnect', () => this.dispatchEvent('server-disconnect'))
-            socket.on('serial-connect', () => this.dispatchEvent('serial-connect'))
-            socket.on('serial-disconnect', () => this.dispatchEvent('serial-disconnect'))
+            socket.on('connect', () => this.dispatchEvent('server-update', true))
+            socket.on('disconnect', () => {
+                this.isConnected = false
+                this.dispatchEvent('server-update', false)
+                this.dispatchEvent('disconnect')
+            })
+            socket.on('serialport-update', status => {
+                if(status !== this.isConnected) this.dispatchEvent('serialport-update', status)
+            })
             socket.on('data', data => this.dispatchEvent('data', data))
 
             this.on('write', data => {
-                if(this.log) console.log(`writing data: ${data}`)
+                if(this.log) {
+                    console.log(`Writing data: ${data}`)
+                }
                 socket.emit('write', data)
             })
         })
