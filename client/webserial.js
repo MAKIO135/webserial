@@ -2,7 +2,7 @@ class WebSerial {
     constructor({ host = 'http://localhost', port = 8135 }) {
         this.events = {}
         this.isServerConnected = false
-        this.isDeviceConnected = false
+        this.isSerialConnected = false
         this.data = undefined
         this.log = false
         
@@ -17,12 +17,12 @@ class WebSerial {
         })
         
         this.on('serial-connect', () => {
-            this.isDeviceConnected = true
+            this.isSerialConnected = true
             if(this.log) console.log('Connected to websocket server')
         })
     
         this.on('serial-disconnect', () => {
-            this.isDeviceConnected = false
+            this.isSerialConnected = false
             if(this.log) console.log('Disconnected from websocket server')
         })
         
