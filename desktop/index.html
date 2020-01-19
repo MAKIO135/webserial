@@ -6,14 +6,14 @@
     <link rel="stylesheet" href="css/style.min.css">
 </head>
 <body>
-    <h2>Serial</h2>
+    <!-- <h2>Serial</h2> -->
 
     <div id="serial">
-        <select id="serial-port">
-            <option value="">--Scanning ports--</option>
+        <select class="port">
+            <option value="">--scanning serial ports--</option>
         </select>
 
-        <select id="serial-baudrate">
+        <select class="baudrate">
             <option value="300">300</option>
             <option value="1200">1200</option>
             <option value="2400">2400</option>
@@ -31,19 +31,19 @@
             <option value="2000000">2000000</option>
         </select>
 
-        <p>status: <span id="serial-status">closed</span></p>
-        <p>data: <span id="serial-data"></span></p>
+        <p class="status" title="serial status"></p>
+        <p class="data"></p>
     </div>
 
-    <hr>
+    <!-- <hr> -->
 
-    <h2>Server</h2>
+    <!-- <h2>Server</h2> -->
 
     <div id="server">
-        <p>port: <input type="number" id="server-port" value=""></p>
-        <p>status: <span id="server-status">not started</span></p>
-        <p>clients: <span id="server-clients">0</span></p>
-        <p>data: <span id="server-data"></span></p>
+        <p class="port" contenteditable="true" title="server port"></p>
+        <p class="status" title="server status"></p>
+        <p class="clients" data-content="•••••" title="connected clients"></p>
+        <p class="data"></p>
     </div>
 
     <script src="js/main.js"></script>

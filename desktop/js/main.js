@@ -2,21 +2,21 @@ const { app } = require('electron').remote
 
 app.initEvents()
 
-const serialPortSelect = document.querySelector('#serial-port')
-const serialBaudrateSelect = document.querySelector('#serial-baudrate')
-const serialData = document.querySelector('#serial-data')
-const serialStatus = document.querySelector('#serial-status')
+const serialPortSelect = document.querySelector('#serial>.port')
+const serialBaudrateSelect = document.querySelector('#serial>.baudrate')
+const serialStatus = document.querySelector('#serial>.status')
+const serialData = document.querySelector('#serial>.data')
 
-const serverPortSelect = document.querySelector('#server-port')
-const serverStatus = document.querySelector('#server-status')
-const serverClients = document.querySelector('#server-clients')
-const serverData = document.querySelector('#server-data')
+const serverPort = document.querySelector('#server>.port')
+const serverStatus = document.querySelector('#server>.status')
+const serverClients = document.querySelector('#server>.clients')
+const serverData = document.querySelector('#server>.data')
 
 app.reactor.on('serialport-scanned', ports => {
     if(ports.length !== serialPortSelect.options.length - 1) {
         const selectedPort = serialPortSelect.selectedOptions[0]
 
-        serialPortSelect.innerHTML = `<option value="">--Select port--</option>`
+        serialPortSelect.innerHTML = `<option value="">--select serial port--</option>`
 
         ports.forEach(port => {
             const option = document.createElement('option')
@@ -46,13 +46,13 @@ serialPortSelect.addEventListener('change', connectSerial)
 serialBaudrateSelect.addEventListener('change', connectSerial)
 
 app.reactor.on('serialport-opened', () => {
-    if(serialStatus.innerText !== 'OK') {
-        serialStatus.innerText = 'OK'
+    if(!serialStatus.classList.contains('open')) {
+        serialStatus.classList.add('open')
     }
 })
 
 app.reactor.on('serialport-closed', () => {
-    serialStatus.innerText = 'closed'
+    serialStatus.classList.remove('open')
     serialData.innerText = ''
 })
 
@@ -60,14 +60,29 @@ app.reactor.on('serialport-data', dataString => {
     serialData.innerText = dataString
 })
 
-serverPortSelect.addEventListener('change', e => {
-    const port = parseInt(serverPortSelect.value)
-    if(port > 1000) app.reactor.dispatchEvent('server-start', port)
+serverPort.addEventListener('keypress', e => {
+    if(isNaN(String.fromCharCode(e.which))) e.preventDefault()
+
+    const port = parseInt(serverPort.innerText)
+
+    if(port > 1000) {
+        serverPort.classList.remove('unvalid-port')
+        app.reactor.dispatchEvent('server-start', port)
+    }
+    else {
+        serverPort.classList.add('unvalid-port')
+    }
 })
 
 app.reactor.on('server-started', port => {
-    serverPortSelect.value = port
-    serverStatus.innerText = `OK`
+    console.log('server-started')
+    serverPort.innerHTML = port
+    serverStatus.classList.add('open')
+})
+
+app.reactor.on('server-closed', () => {
+    console.log('server-closed')
+    serverStatus.classList.remove('open')
 })
 
 app.reactor.on('server-data', dataString => {
@@ -75,7 +90,7 @@ app.reactor.on('server-data', dataString => {
 })
 
 app.reactor.on('client-update', n => {
-    serverClients.innerText = n
+    serverClients.dataset.content = '|'.repeat(n).padStart(5, '•')
     if(serverClients.innerText === 0) serverData.innerText = ''
 })
 

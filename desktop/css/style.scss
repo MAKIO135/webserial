@@ -1,9 +1,86 @@
-
-html, body {
-    -webkit-app-region: drag;
-    cursor: move;
+* {
+    margin: 0;
+    padding: 0;
 }
 
-div {
-    -webkit-app-region: no-drag;
+html, body {
+    background-color: #1E1E1E;
+    color: #D4D4D4;
+    font-family: "Courier New", Courier, monospace;
+    padding: 10px 10px 10px 10px;
+}
+
+input[type=number]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+}
+
+#serial {
+    select {
+        background-color: #1E1E1E;
+        color: #D4D4D4;
+        font-family: "Courier New", Courier, monospace;
+        margin-bottom: 4px;
+    }
+
+    .status {
+        display: inline-block;
+        &::before {
+            text-align: center;
+        }
+    }
+}
+
+#server {
+    margin-top: 15px;
+
+    .port {
+        &::before {
+            content: ":"
+        }
+
+        &.unvalid-port {
+            text-decoration: underline;
+        }
+    }
+
+    .clients {
+        &:before {
+            content: attr(data-content);
+        }
+    }
+
+    .port, .status, .clients {
+        display: inline-block;
+    }
+}
+
+.status {
+    &.open {
+        &::before {
+            color: rgb(37, 153, 59);
+            content: "●";
+        }
+    }
+
+    &:not(.open) {
+        &::before {
+            color: rgb(158, 29, 29);
+            content: "✖︎";
+        }
+    }
+}
+
+.data {
+    &:before {
+        content: "> "
+    }
+
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+*:focus {
+    outline: none;
 }

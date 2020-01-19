@@ -44,6 +44,8 @@ app.initEvents = () => {
     app.reactor.on('server-start', port => {
         io.close()
         http.close(() => {
+            app.reactor.dispatchEvent('server-closed')
+
             app.serverPort = port
             http = require('http').createServer(expressApp)
             io = require('socket.io')(http)
@@ -91,15 +93,15 @@ app.initEvents = () => {
 
 const createWindow = () => {
     app.win = new BrowserWindow({
-        width: 600,
-        height: 400,
+        width: 500,
+        height: 150,
         minWidth: 250,
         minHeight: 150,
         // icon: __dirname + '/icon.ico',
-        backgroundColor: 'black',
-        frame: false,
+        backgroundColor: '#1E1E1E',
+        // frame: false,
         resizable: true,
-        skipTaskbar: false,
+        // skipTaskbar: false,
         autoHideMenuBar: true,
         webPreferences: {
             nodeIntegration: true
