@@ -1,5 +1,7 @@
 class WebSerial {
-    constructor({ host = 'http://localhost', port = 8135, log = false }) {
+    constructor(options) {
+        const { host = 'http://localhost', port = 8135, log = false } = options || {}
+        
         this.events = {}
         this.log = log
         this.data = undefined
