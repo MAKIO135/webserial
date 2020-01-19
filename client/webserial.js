@@ -1,25 +1,24 @@
 class WebSerial {
     constructor(options) {
         const { host = 'http://localhost', port = 8135, log = false } = options || {}
-        
+
         this.events = {}
-        this.log = log
         this.data = undefined
         this.isConnected = false
         
         this.on('server-update', status => {
-            if(this.log) console.log(status ? 'Connected to websocket server' : 'Disconnected from websocket server')
+            if(log) console.log(status ? 'Connected to websocket server' : 'Disconnected from websocket server')
         })
         
         this.on('serialport-update', status => {
             this.isConnected = status
             this.dispatchEvent(this.isConnected ? 'connect' : 'disconnect')
-            if(this.log) console.log(this.isConnected ? 'Connected to Serial port' : 'Disconnected from Serial port')
+            if(log) console.log(this.isConnected ? 'Connected to Serial port' : 'Disconnected from Serial port')
         })
         
         this.on('data', data => {
             this.data = data
-            if(this.log) console.log(`data received: ${data}`)
+            if(log) console.log(`data received: ${data}`)
         })
 
         const script = document.createElement('script')
@@ -38,7 +37,7 @@ class WebSerial {
             socket.on('data', data => this.dispatchEvent('data', data))
 
             this.on('write', data => {
-                if(this.log) {
+                if(log) {
                     console.log(`Writing data: ${data}`)
                 }
                 socket.emit('write', data)
