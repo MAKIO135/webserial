@@ -1,8 +1,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Hello World!</title>
-    <!-- https://electronjs.org/docs/tutorial/security#csp-meta-tag -->
+    <title>WebSerial</title>
     <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
     <link rel="stylesheet" href="css/style.min.css">
 </head>
@@ -13,7 +12,7 @@
         <select id="serial-port">
             <option value="">--Scanning ports--</option>
         </select>
-    
+
         <select id="serial-baudrate">
             <option value="300">300</option>
             <option value="1200">1200</option>
@@ -37,7 +36,7 @@
     </div>
 
     <hr>
-    
+
     <h2>Server</h2>
 
     <div id="server">

@@ -19,35 +19,35 @@ app.initEvents = () => {
 
     app.reactor.on('serialport-open', ({ path, baudRate }) => {
         app.reactor.dispatchEvent('serialport-close')
-    
+
         app.serialPort = new SerialPort( path, { baudRate })
         app.parser = app.serialPort.pipe(new Readline())
         
         app.serialPort.on('error', err => {
             app.reactor.dispatchEvent('serialport-error', err)
         })
-        
+
         app.parser.on('data', data => {
             app.reactor.dispatchEvent('serialport-data', data)
             app.reactor.dispatchEvent('server-emit', data)
         })
-    
+
         app.reactor.dispatchEvent('serialport-opened')
     })
-    
+
     app.reactor.on('serialport-close', () => {
         if(app.serialPort !== null) app.serialPort.close()
         app.serialPort = null
         app.reactor.dispatchEvent('serialport-closed')
     })
-    
+
     app.reactor.on('server-start', port => {
         io.close()
         http.close(() => {
             app.serverPort = port
             http = require('http').createServer(expressApp)
             io = require('socket.io')(http)
-    
+
             io.on('connection', socket => {
                 app.reactor.dispatchEvent('client-update', Object.keys(io.sockets.connected).length)
                 
@@ -60,14 +60,14 @@ app.initEvents = () => {
                     app.reactor.dispatchEvent('client-update', Object.keys(io.sockets.connected).length)
                 })
             })
-    
+
             http.listen(app.serverPort, () => {
                 console.log(`listening on ${app.serverPort}`)
                 app.reactor.dispatchEvent('server-started', app.serverPort)
             })
         })
     })
-    
+
     app.reactor.on('server-emit', msg => io.emit('data', msg))
     app.reactor.on('serialport-opened', () => io.emit('serialport-update', true))
     app.reactor.on('serialport-closed', () => io.emit('serialport-update', false))
@@ -83,7 +83,7 @@ app.initEvents = () => {
                     app.reactor.dispatchEvent('serialport-closed')
                 }
             }
-    
+
             app.reactor.dispatchEvent('serialport-scanned', ports)
         })
     }, 200)
@@ -93,19 +93,19 @@ const createWindow = () => {
     app.win = new BrowserWindow({
         width: 600,
         height: 400,
-		minWidth: 250,
-		minHeight: 150,
-		// icon: __dirname + '/icon.ico',
-		backgroundColor: 'black',
-		frame: false,
-		resizable: true,
-		skipTaskbar: false,
-		autoHideMenuBar: true,
+        minWidth: 250,
+        minHeight: 150,
+        // icon: __dirname + '/icon.ico',
+        backgroundColor: 'black',
+        frame: false,
+        resizable: true,
+        skipTaskbar: false,
+        autoHideMenuBar: true,
         webPreferences: {
             nodeIntegration: true
         }
     })
-    
+
     app.win.loadFile('index.html')
 
     app.win.on('closed', () => {

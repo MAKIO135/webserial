@@ -5,17 +5,17 @@ class WebSerial {
         this.events = {}
         this.data = undefined
         this.isConnected = false
-        
+
         this.on('server-update', status => {
             if(log) console.log(status ? 'Connected to websocket server' : 'Disconnected from websocket server')
         })
-        
+
         this.on('serialport-update', status => {
             this.isConnected = status
             this.dispatchEvent(this.isConnected ? 'connect' : 'disconnect')
             if(log) console.log(this.isConnected ? 'Connected to Serial port' : 'Disconnected from Serial port')
         })
-        
+
         this.on('data', data => {
             this.isConnected = true
             this.data = data
@@ -53,7 +53,7 @@ class WebSerial {
                 this.name = name
                 this.callbacks = []
             }
-            
+
             registerCallback(callback) {
                 this.callbacks.push(callback)
             }
@@ -62,7 +62,7 @@ class WebSerial {
         const event = new Event(eventName)
         this.events[eventName] = event
     }
-    
+
     dispatchEvent(eventName, eventArgs) {
         if(this.events[eventName]) {
             this.events[eventName].callbacks.forEach(callback => {
@@ -70,7 +70,7 @@ class WebSerial {
             })
         }
     }
-    
+
     on(eventName, callback) {
         if(!this.events[eventName]) this.registerEvent(eventName)
         this.events[eventName].registerCallback(callback)
