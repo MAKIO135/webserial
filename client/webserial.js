@@ -17,6 +17,7 @@ class WebSerial {
         })
         
         this.on('data', data => {
+            this.isConnected = true
             this.data = data
             if(log) console.log(`data received: ${data}`)
         })
