@@ -4,6 +4,8 @@
 > 
 > [@Makio135](https://twitter.com/makio135)
 
+![WbeSerial capture](https://i.imgur.com/WqXCIWo.png)
+
 - [Concept](#concept)
 - [How to use WebSerial](#how-to-use-webserial)
 - [Documentation](#documentation)
