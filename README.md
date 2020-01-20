@@ -62,7 +62,7 @@ A `WebSerial` Instance exposes a few methods and properties:
     - `'connect'`: no argument is passed to the callback
     - `'disconnect'`: no argument is passed to the callback
     - `'data'`: callback takes one argument, the data received
-- `.write(dataString)`: method use to send data to the microcontrolller
+- `.write(dataString)`: method used to send data to the microcontrolller
 
 ```html
 <body>
