@@ -12,19 +12,21 @@
 - [Acknowledgments](#acknowledgments)
 
 ## Concept
-[Web Bluetooth](https://webbluetoothcg.github.io/web-bluetooth/) and [WebUSB](https://wicg.github.io/webusb/) are awesome ways to connect physical devices and microcontrollers to Web browsers.  
-But, while these APIs are still in early stages, not widely supported or limited to a [very little set of devices](https://github.com/webusb/arduino#compatible-hardware) for now, WebSockets are way more accessible and cheap Arduinos or the like can be found easily.  
-For reference, see:
-- https://caniuse.com/#search=webbluetooth
-- https://caniuse.com/#search=webusb
-- https://caniuse.com/#search=websockets
+[Web MIDI](https://webaudio.github.io/web-midi-api/), [Web Bluetooth](https://webbluetoothcg.github.io/web-bluetooth/) and [Web USB](https://wicg.github.io/webusb/) are awesome ways to connect physical devices and microcontrollers to Web browsers and create rich interactive experiments.  
+But, while these APIs are still in early stages, not widely supported or limited to a [very little set of devices](https://github.com/webusb/arduino#compatible-hardware) for now, WebSockets are way more accessible and cheap Arduinos or the likes can be found easily.  
 
-WebSerial brings a really simple way to connect your browser to any device with Serial communication and hack into physical web.
+**WebSerial is a really simple way to connect your browser to any device with Serial communication and hack into physical web.**
 
 WebSerial provides two ways communication between Serial devices and browsers through websockets transport: *any Serial data is forwarded to your page, and the same in the other direction*.
 
 WebSerial uses [serialport](https://serialport.io/) to open a Serial connection, and runs an [express](https://expressjs.com/) / [socket.io](https://socket.io/) websocket server to communicate with your web page in realtime.  
 *Server runs on port 8135* by default but can be changed in WebSerial.
+
+For references, see:
+- https://caniuse.com/#feat=midi
+- https://caniuse.com/#feat=web-bluetooth
+- https://caniuse.com/#feat=webusb
+- https://caniuse.com/#feat=mdn-api_websocket
 
 ## How to use the WebSerial App
 - Download the [latest release](https://github.com/makio135/webserial/releases) for your OS.  
