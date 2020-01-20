@@ -75,13 +75,11 @@ serverPort.addEventListener('keypress', e => {
 })
 
 app.reactor.on('server-started', port => {
-    console.log('server-started')
-    serverPort.innerHTML = port
+    serverPort.value = port
     serverStatus.classList.add('open')
 })
 
 app.reactor.on('server-closed', () => {
-    console.log('server-closed')
     serverStatus.classList.remove('open')
 })
 
