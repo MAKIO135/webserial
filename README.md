@@ -12,16 +12,21 @@
 - [Acknowledgments](#acknowledgments)
 
 ## Concept
-[WebUSB](https://wicg.github.io/webusb/) is an awesome way to connect physical devices and microcontrollers to Web browsers but is limited to a [very little set of devices](https://github.com/webusb/arduino#compatible-hardware) for now.  
+[Web Bluetooth](https://webbluetoothcg.github.io/web-bluetooth/) and [WebUSB](https://wicg.github.io/webusb/) are awesome ways to connect physical devices and microcontrollers to Web browsers.  
+But, while these APIs are still in early stages, not widely supported or limited to a [very little set of devices](https://github.com/webusb/arduino#compatible-hardware) for now, WebSockets are way more accessible and cheap Arduinos or the like can be found easily.  
+For reference, see:
+- https://caniuse.com/#search=webbluetooth
+- https://caniuse.com/#search=webusb
+- https://caniuse.com/#search=websockets
 
-WebSerial brings a really simple way to connect your browser to any device with Serial communication and hack into tangible web.
+WebSerial brings a really simple way to connect your browser to any device with Serial communication and hack into physical web.
 
-WebSerial provides two ways communication between Serial deveices and browsers through websockets transport: *any Serial data is forwarded to your page, and the same in the other direction*.
+WebSerial provides two ways communication between Serial devices and browsers through websockets transport: *any Serial data is forwarded to your page, and the same in the other direction*.
 
 WebSerial uses [serialport](https://serialport.io/) to open a Serial connection, and runs an [express](https://expressjs.com/) / [socket.io](https://socket.io/) websocket server to communicate with your web page in realtime.  
-*Server runs on port 8135*.
+*Server runs on port 8135* by default but can be changed in WebSerial.
 
-## How to use WebSerial
+## How to use the WebSerial App
 - Download the [latest release](https://github.com/makio135/webserial/releases) for your OS.  
 - Start the WebSerial application.  
 - Connect your microcontroller.  
@@ -30,10 +35,27 @@ WebSerial uses [serialport](https://serialport.io/) to open a Serial connection,
     ```html
     <script src="https://cdn.jsdelivr.net/gh/makio135/webserial/client/webserial.js"></script>
     ```
-You now have access to the `Webserial` Class.
+You now have access to the `Webserial` Class, see [Documentation](#documentation) below 👇.
 
 ## Documentation
-The `webserial` Object exposes a few methods and properties:
+The `Webserial` Class needs to be instanciated:
+```javascript
+const webserial = new WebSerial()
+```
+The constructor can take an `options` Object to define the following properties:
+- `host`: The IP of the computer running the WebSerial app. String, default to `localhost`, optional.
+- `port`: The port of the websocket server. Number, default to `8135`, optional.
+- `log`: Additional logs in the console for debugging. Boolean, default to `false`, optional.
+
+```javascript
+const webserial = new WebSerial({
+    host: '192.168.0.14',
+    port: 8000,
+    log: true
+})
+```
+
+A `WebSerial` Instance exposes a few methods and properties:
 - `.on(eventType, callback)`, valid event types are:
     - `'connect'`: no argument is passed to the callback
     - `'disconnect'`: no argument is passed to the callback
