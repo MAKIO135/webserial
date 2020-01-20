@@ -1,7 +1,8 @@
 class WebSerial {
     constructor(options) {
         const { host = 'localhost', port = 8135, log = false } = options || {}
-
+        
+        this.serverURL = `http://${host}:${port}`
         this.events = {}
         this.data = ''
         this.isConnected = false
@@ -23,9 +24,9 @@ class WebSerial {
         })
 
         const script = document.createElement('script')
-        script.src = `http://${host}:${port}/socket.io/socket.io.js`
+        script.src = `${this.serverURL}/socket.io/socket.io.js`
         script.addEventListener('load', e => {
-            const socket = io(`${host}:${port}`)
+            const socket = io(this.serverURL)
             socket.on('connect', () => this.dispatchEvent('server-update', true))
             socket.on('disconnect', () => {
                 this.isConnected = false
