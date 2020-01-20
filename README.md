@@ -58,7 +58,7 @@ const serial = new WebSerial({
 ```
 
 A `WebSerial` Instance exposes a few methods and properties:
-- `.on(eventType, callback)`, valid event types are:
+- `.on(eventName, callback)`, valid events are:
     - `'connect'`: no argument is passed to the callback
     - `'disconnect'`: no argument is passed to the callback
     - `'data'`: callback takes one argument, the data received
