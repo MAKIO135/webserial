@@ -1,6 +1,10 @@
 * {
     margin: 0;
     padding: 0;
+
+    &:focus {
+        outline: none;
+    }
 }
 
 html, body {
@@ -14,14 +18,14 @@ input[type=number]::-webkit-inner-spin-button {
     -webkit-appearance: none;
 }
 
-#serial {
-    select {
-        background-color: #1E1E1E;
-        color: #D4D4D4;
-        font-family: "Courier New", Courier, monospace;
-        margin-bottom: 4px;
-    }
+select, input {
+    background-color: #1E1E1E;
+    color: #D4D4D4;
+    font-family: "Courier New", Courier, monospace;
+    margin-bottom: 4px;
+}
 
+#serial {
     .status {
         display: inline-block;
         &::before {
@@ -34,12 +38,17 @@ input[type=number]::-webkit-inner-spin-button {
     margin-top: 15px;
 
     .port {
+        border: none;
+
         &::before {
             content: ":"
         }
 
         &.unvalid-port {
-            text-decoration: underline;
+            border-bottom: solid 1px red;
+            &::after {
+                content: "🛑"
+            }
         }
     }
 
@@ -79,8 +88,4 @@ input[type=number]::-webkit-inner-spin-button {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-}
-
-*:focus {
-    outline: none;
 }

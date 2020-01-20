@@ -7,7 +7,7 @@ const serialBaudrateSelect = document.querySelector('#serial>.baudrate')
 const serialStatus = document.querySelector('#serial>.status')
 const serialData = document.querySelector('#serial>.data')
 
-const serverPort = document.querySelector('#server>.port')
+const serverPort = document.querySelector('#server .port')
 const serverStatus = document.querySelector('#server>.status')
 const serverClients = document.querySelector('#server>.clients')
 const serverData = document.querySelector('#server>.data')
@@ -60,12 +60,24 @@ app.reactor.on('serialport-data', dataString => {
     serialData.innerText = dataString
 })
 
-serverPort.addEventListener('change', e => {
+app.reactor.on('serverport-update', () => {
+    serverPort.style.width = `${serverPort.value.length * 7}px`;
+})
+
+serverPort.addEventListener('keydown', e => {
+    app.reactor.dispatchEvent('serverport-update')
+})
+
+serverPort.addEventListener('keyup', e => {
     const port = parseInt(serverPort.value)
+    console.log(port)
     
     if(port > 1000) {
         serverPort.classList.remove('unvalid-port')
-        app.reactor.dispatchEvent('server-start', port)
+
+        if(port !== app.serverPort) {
+            app.reactor.dispatchEvent('server-start', port)
+        }
     }
     else {
         serverPort.classList.add('unvalid-port')
@@ -75,6 +87,7 @@ serverPort.addEventListener('change', e => {
 app.reactor.on('server-started', port => {
     serverPort.value = port
     serverStatus.classList.add('open')
+    app.reactor.dispatchEvent('serverport-update')
 })
 
 app.reactor.on('server-closed', () => {
