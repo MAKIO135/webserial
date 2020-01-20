@@ -60,11 +60,9 @@ app.reactor.on('serialport-data', dataString => {
     serialData.innerText = dataString
 })
 
-serverPort.addEventListener('keypress', e => {
-    if(isNaN(String.fromCharCode(e.which))) e.preventDefault()
-
-    const port = parseInt(serverPort.innerText)
-
+serverPort.addEventListener('change', e => {
+    const port = parseInt(serverPort.value)
+    
     if(port > 1000) {
         serverPort.classList.remove('unvalid-port')
         app.reactor.dispatchEvent('server-start', port)
