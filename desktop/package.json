@@ -1,15 +1,15 @@
 {
   "name": "webserial",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Electron app to bring Serial communication to Web browsers through websockets.",
   "homepage": "https://github.com/makio135/webserial#readme",
   "main": "index.js",
   "scripts": {
     "start": "electron .",
     "clean": "rm -r ~/Desktop/WebSerial-darwin-x64/ ; rm -r ~/Desktop/WebSerial-linux-x64/ ; rm -r ~/Desktop/WebSerial-win32-x64/ ; echo 'cleaned build location'",
-    "build_osx": "electron-packager . WebSerial --platform=darwin --arch=x64 --out ~/Desktop/ --overwrite --icon=icon.icns ; echo 'Built for OSX'",
-    "build_linux": "electron-packager . WebSerial --platform=linux  --arch=x64 --out ~/Desktop/ --overwrite --icon=icon.ico ; echo 'Built for LINUX'",
-    "build_win": "electron-packager . WebSerial --platform=win32  --arch=x64 --out ~/Desktop/ --overwrite --icon=icon.ico ; echo 'Built for WIN'",
+    "build_osx": "electron-packager . WebSerial --platform=darwin --arch=x64 --out ~/Desktop/ --overwrite ; echo 'Built for OSX'",
+    "build_linux": "electron-packager . WebSerial --platform=linux  --arch=x64 --out ~/Desktop/ --overwrite ; echo 'Built for LINUX'",
+    "build_win": "electron-packager . WebSerial --platform=win32  --arch=x64 --out ~/Desktop/ --overwrite ; echo 'Built for WIN'",
     "build": "npm run clean ; npm run build_osx ; npm run build_linux ; npm run build_win"
   },
   "repository": {
@@ -31,6 +31,7 @@
   },
   "devDependencies": {
     "electron": "^7.1.9",
+    "electron-packager": "^14.2.0",
     "electron-rebuild": "^1.8.8"
   },
   "dependencies": {
