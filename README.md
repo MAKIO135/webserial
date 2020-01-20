@@ -72,6 +72,7 @@ A `WebSerial` Instance exposes a few methods and properties:
         serial.on('connect', () => console.log('Serial connected'))
         serial.on('disconnect', () => console.log('Serial disconnected'))
         serial.on('data', data => console.log(`Data received: ${data}`))
+        serial.write('Hello WebSerial')
     </script>
 </body>
 ```
@@ -99,6 +100,10 @@ Or for use in a more direct mode:
             if(serial.isConnected) {
                 text(serial.data, 5, 15)
             }
+        }
+
+        function mousePressed() {
+            serial.write(int(mouseX / width * 255))
         }
     </script>
 </body>
