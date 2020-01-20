@@ -14,7 +14,7 @@ class WebSerial {
         this.on('serialport-update', status => {
             this.isConnected = status
             this.dispatchEvent(this.isConnected ? 'connect' : 'disconnect')
-            if(log) console.log(this.isConnected ? 'Connected to Serial port' : 'Disconnected from Serial port')
+            if(log) console.log(this.isConnected ? 'Connected to Serial' : 'Disconnected from Serial')
         })
 
         this.on('data', data => {
