@@ -42,7 +42,7 @@ You now have access to the `Webserial` Class, see [Documentation](#documentation
 ## Documentation
 The `Webserial` Class needs to be instanciated:
 ```javascript
-const webserial = new WebSerial()
+const serial = new WebSerial()
 ```
 The constructor can take an `options` Object to define the following properties:
 - `host`: The IP of the computer running the WebSerial app. String, default to `localhost`, optional.
@@ -50,7 +50,7 @@ The constructor can take an `options` Object to define the following properties:
 - `log`: Additional logs in the console for debugging. Boolean, default to `false`, optional.
 
 ```javascript
-const webserial = new WebSerial({
+const serial = new WebSerial({
     host: '192.168.0.14',
     port: 8000,
     log: true
@@ -68,10 +68,10 @@ A `WebSerial` Instance exposes a few methods and properties:
 <body>
     <script src="https://cdn.jsdelivr.net/gh/makio135/webserial/client/webserial.js"></script>
     <script>
-        const webserial = new WebSerial()
-        webserial.on('connect', () => console.log('Serial connected'))
-        webserial.on('disconnect', () => console.log('Serial disconnected'))
-        webserial.on('data', data => console.log(`Data received: ${data}`))
+        const serial = new WebSerial()
+        serial.on('connect', () => console.log('Serial connected'))
+        serial.on('disconnect', () => console.log('Serial disconnected'))
+        serial.on('data', data => console.log(`Data received: ${data}`))
     </script>
 </body>
 ```
@@ -87,17 +87,17 @@ Or for use in a more direct mode:
     <script src="https://cdn.jsdelivr.net/npm/p5@0.10.2/lib/p5.js"></script>
 
     <script>
-        let webserial
+        let serial
 
         function setup() {
             createCanvas(400, 400)
-            webserial = new WebSerial()
+            serial = new WebSerial()
         }
 
         function draw() {
             background(255)
-            if(webserial.isConnected) {
-                text(webserial.data, 5, 15)
+            if(serial.isConnected) {
+                text(serial.data, 5, 15)
             }
         }
     </script>
