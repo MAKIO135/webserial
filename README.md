@@ -11,6 +11,7 @@
 - [Documentation](#documentation)
 - [Acknowledgments](#acknowledgments)
 
+
 ## Concept
 [Web MIDI](https://webaudio.github.io/web-midi-api/), [Web Bluetooth](https://webbluetoothcg.github.io/web-bluetooth/) and [Web USB](https://wicg.github.io/webusb/) are awesome ways to connect physical devices and microcontrollers to Web browsers and create rich interactive experiments.  
 But, while these APIs are still in early stages, not widely supported or limited to a [very little set of devices](https://github.com/webusb/arduino#compatible-hardware) for now, WebSockets are way more accessible and cheap Arduinos or the likes can be found easily.  
@@ -28,16 +29,82 @@ For references, see:
 - https://caniuse.com/#feat=webusb
 - https://caniuse.com/#feat=mdn-api_websocket
 
+
+## How to configure your Serial device
+**WebSerial uses the `\n` character as a delimiter to parse data.** In Arduino, this corresponds to use `Serial.println()`.  
+**WebSerial also appends a `\n` character to your data, in order to parse it easily.**
+
+```arduino
+#define MAX_CHARS 200
+
+String input;
+
+void setup() {
+    Serial.begin(9600);
+    input.reserve(MAX_CHARS);
+}
+
+void loop() {}
+
+void serialEvent() {
+    while (Serial.available()) {
+        readChar();
+    }
+}
+
+void readChar() {
+    char c = (char) Serial.read();
+    Serial.print("->");
+    Serial.println(c);
+}
+
+void readString() {
+    char c = (char) Serial.read();
+
+    if (c == '\n') {
+        Serial.println("->" + input);
+        input = "";
+    }
+    else {
+        input += c;
+    }
+}
+
+void readInt() {
+    int i = Serial.parseInt();
+    Serial.print("->");
+    Serial.println(i);
+}
+
+void readLong() {
+    char c = (char) Serial.read();
+
+    if (c == '\n') {
+        char buffer[MAX_CHARS];
+        input.toCharArray(buffer, 20);
+        long l = atol(buffer);
+        Serial.print("->");
+        Serial.println(l);
+        input = "";
+    }
+    else {
+        input += c;
+    }
+}
+```
+
+
 ## How to use the WebSerial App
 - Download the [latest release](https://github.com/makio135/webserial/releases) for your OS.  
 - Start the WebSerial application.  
-- Connect your microcontroller.  
+- Connect your Serial device.  
 - Select the `port` and `baudrate` for your device, and click `connect`.  
 - On your web page, add the link to this script:
     ```html
     <script src="https://cdn.jsdelivr.net/gh/makio135/webserial/client/webserial.js"></script>
     ```
 You now have access to the `Webserial` Class, see [Documentation](#documentation) below 👇.
+
 
 ## Documentation
 The `Webserial` Class needs to be instanciated:
@@ -108,6 +175,7 @@ Or for use in a more direct mode:
     </script>
 </body>
 ```
+
 
 ## Acknowledgments
 WebSerial would not be possible without these great projects: 
