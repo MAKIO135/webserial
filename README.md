@@ -18,7 +18,7 @@ But, while these APIs are still in early stages, not widely supported or limited
 **WebSerial is a really simple way to connect your browser to any device with Serial communication and hack into physical web.**
 
 WebSerial provides two ways communication between Serial devices and browsers through websockets transport:  
-*any Serial data is forwarded to your page, and the same in the other direction.**
+**Any Serial data is forwarded to your page, and the same in the other direction.**
 
 WebSerial uses [serialport](https://serialport.io/) to open a Serial connection, and runs an [express](https://expressjs.com/) / [socket.io](https://socket.io/) websocket server to communicate with your web page in realtime.  
 **Server runs on port 8135** by default but can be changed in WebSerial.
