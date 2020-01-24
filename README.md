@@ -35,7 +35,7 @@ For references, see:
 **WebSerial uses the `\n` character as a delimiter to parse data.** In Arduino, this corresponds to use `Serial.println()`.  
 **WebSerial also appends a `\n` character to your data, in order to parse it easily.**
 
-```arduino
+```cpp
 #define MAX_CHARS 200
 
 String input;
