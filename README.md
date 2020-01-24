@@ -32,8 +32,24 @@ For references, see:
 
 
 ## How to configure your Serial device
+![](montage.png)
 **WebSerial uses the `\n` character as a delimiter to parse data.** In Arduino, this corresponds to use `Serial.println()`.  
+
+```cpp
+void setup(){
+    Serial.begin(9600);
+}
+
+void loop() {
+    Serial.print(analogRead(A0));
+    Serial.print(',');
+    Serial.println(analogRead(A1));
+}
+```
+
 **WebSerial also appends a `\n` character to your data, in order to parse it easily.**
+<details>
+<summary>Click here for some utility functions for parsing data in Arduino</summary>
 
 ```cpp
 #define MAX_CHARS 200
@@ -93,6 +109,7 @@ void readLong() {
     }
 }
 ```
+</details>
 
 
 ## How to use the WebSerial App
