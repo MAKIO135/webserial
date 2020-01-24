@@ -102,7 +102,7 @@ void readLong() {
 - Select the `port` and `baudrate` for your device, and click `connect`.  
 - On your web page, add the link to this script:
     ```html
-    <script src="https://cdn.jsdelivr.net/gh/makio135/webserial/client/webserial.js"></script>
+    <script src="https://rawcdn.git.rest/MAKIO135/webserial/b867c778ca221cad56d726e62bdf0c4de8f27b74/client/webserial.js"></script>
     ```
 You now have access to the `Webserial` Class, see [Documentation](#documentation) below 👇.
 
@@ -134,7 +134,7 @@ A `WebSerial` Instance exposes a few methods and properties:
 
 ```html
 <body>
-    <script src="https://cdn.jsdelivr.net/gh/makio135/webserial/client/webserial.js"></script>
+    <script src="https://rawcdn.git.rest/MAKIO135/webserial/b867c778ca221cad56d726e62bdf0c4de8f27b74/client/webserial.js"></script>
     <script>
         const serial = new WebSerial()
         serial.on('connect', () => console.log('Serial connected'))
@@ -152,7 +152,7 @@ Or for use in a more direct mode:
 ```html
 <!-- Example using the p5js library (https://p5js.org/) -->
 <body>
-    <script src="https://cdn.jsdelivr.net/gh/makio135/webserial/client/webserial.js"></script>
+    <script src="https://rawcdn.git.rest/MAKIO135/webserial/b867c778ca221cad56d726e62bdf0c4de8f27b74/client/webserial.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/p5@0.10.2/lib/p5.js"></script>
 
     <script>
