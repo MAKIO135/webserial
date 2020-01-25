@@ -7,6 +7,7 @@
 ![WbeSerial capture](https://i.imgur.com/WqXCIWo.png)
 
 - [Concept](#concept)
+- [How to configure your Serial device](##how-to-configure-your-serial-device)
 - [How to use WebSerial](#how-to-use-webserial)
 - [Documentation](#documentation)
 - [Acknowledgments](#acknowledgments)
@@ -18,8 +19,8 @@ But, while these APIs are still in early stages, not widely supported or limited
 
 **WebSerial is a really simple way to connect your browser to any device with Serial communication and hack into physical web.**
 
-WebSerial provides two ways communication between Serial devices and browsers through websockets transport:  
-**Any Serial data is forwarded to your page, and the same in the other direction.**
+**WebSerial provides two ways communication between Serial devices and browsers**:  
+Serial data is forwarded to your page, and you can also use it to send data from your web page to your device.
 
 WebSerial uses [serialport](https://serialport.io/) to open a Serial connection, and runs an [express](https://expressjs.com/) / [socket.io](https://socket.io/) websocket server to communicate with your web page in realtime.  
 **Server runs on port 8135** by default but can be changed in WebSerial.
@@ -32,8 +33,10 @@ For references, see:
 
 
 ## How to configure your Serial device
+**WebSerial uses the `\n` character as a delimiter to parse data.**  
+In Arduino, this corresponds to use `Serial.println()`.  
+
 ![](montage.png)
-**WebSerial uses the `\n` character as a delimiter to parse data.** In Arduino, this corresponds to use `Serial.println()`.  
 
 ```cpp
 void setup(){
@@ -47,7 +50,8 @@ void loop() {
 }
 ```
 
-**WebSerial also appends a `\n` character to your data, in order to parse it easily.**
+**WebSerial also appends a `\n` character to your data, in order to parse it easily.**  
+Check the [Read ASCII String](https://www.arduino.cc/en/Tutorial/ReadASCIIString) tutorial on Arduino's website.
 <details>
 <summary>Click here for some utility functions for parsing data in Arduino</summary>
 
@@ -117,9 +121,9 @@ void readLong() {
 - Start the WebSerial application.  
 - Connect your Serial device.  
 - Select the `port` and `baudrate` for your device, and click `connect`.  
-- On your web page, add the link to this script:
+- On your web page, include the [`webserial.js` library](https://github.com/MAKIO135/webserial/tree/master/client), or use raw.git.rest:
     ```html
-    <script src="https://rawcdn.git.rest/MAKIO135/webserial/b867c778ca221cad56d726e62bdf0c4de8f27b74/client/webserial.js"></script>
+    <script src="https://rawcdn.git.rest/MAKIO135/webserial/f161d2d4d2840151dbfc92b80d5a12993ed1ad0a/client/webserial.min.js"></script>
     ```
 You now have access to the `Webserial` Class, see [Documentation](#documentation) below 👇.
 
@@ -151,13 +155,13 @@ A `WebSerial` Instance exposes a few methods and properties:
 
 ```html
 <body>
-    <script src="https://rawcdn.git.rest/MAKIO135/webserial/b867c778ca221cad56d726e62bdf0c4de8f27b74/client/webserial.js"></script>
+    <script src="js/webserial.min.js"></script>
     <script>
         const serial = new WebSerial()
         serial.on('connect', () => console.log('Serial connected'))
         serial.on('disconnect', () => console.log('Serial disconnected'))
         serial.on('data', data => console.log(`Data received: ${data}`))
-        serial.write('Hello WebSerial')
+        document.body.addEventListener('click', () => serial.write('Hello WebSerial'))
     </script>
 </body>
 ```
@@ -169,7 +173,7 @@ Or for use in a more direct mode:
 ```html
 <!-- Example using the p5js library (https://p5js.org/) -->
 <body>
-    <script src="https://rawcdn.git.rest/MAKIO135/webserial/b867c778ca221cad56d726e62bdf0c4de8f27b74/client/webserial.js"></script>
+    <script src="js/webserial.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/p5@0.10.2/lib/p5.js"></script>
 
     <script>
