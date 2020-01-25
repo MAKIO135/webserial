@@ -123,7 +123,7 @@ void readLong() {
 - Select the `port` and `baudrate` for your device, and click `connect`.  
 - On your web page, include the [`webserial.js` library](https://github.com/MAKIO135/webserial/tree/master/client), or use raw.git.rest:
     ```html
-    <script src="https://rawcdn.git.rest/MAKIO135/webserial/f161d2d4d2840151dbfc92b80d5a12993ed1ad0a/client/webserial.min.js"></script>
+    <script src="https://rawcdn.git.rest/MAKIO135/webserial/1a9e792fa5dd141aa239d5559cd1d074e235c0d5/client/webserial.min.js"></script>
     ```
 You now have access to the `Webserial` Class, see [Documentation](#documentation) below 👇.
 
