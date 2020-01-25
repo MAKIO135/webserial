@@ -178,17 +178,17 @@ Or for use in a more direct mode:
     <script src="https://cdn.jsdelivr.net/npm/p5@0.10.2/lib/p5.js"></script>
 
     <script>
-        let serial
+        let serial = new WebSerial()
 
-        function setup() {
-            createCanvas(400, 400)
-            serial = new WebSerial()
+        function setup(){
+            createCanvas(windowWidth, windowHeight);
+            background(0)
         }
 
-        function draw() {
-            background(255)
-            if(serial.isConnected) {
-                text(serial.data, 5, 15)
+        function draw(){
+            if(serial.isConnected && serial.data) {
+                let [r, g] = serial.data.split(',').map(d => parseInt(d) / 4)
+                background(r, g, 127)
             }
         }
 
