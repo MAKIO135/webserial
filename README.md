@@ -122,7 +122,7 @@ void readLong() {
 - Start the WebSerial application.  
 - Connect your Serial device.  
 - Select the `port` and `baudrate` for your device, and click `connect`.  
-- On your web page, include the [`webserial.js` library](https://github.com/MAKIO135/webserial/tree/master/client), or use raw.git.rest:
+- On your web page, include the [`webserial.js` library](https://github.com/MAKIO135/webserial/tree/master/client), or use this one (served via github pages):
     ```html
     <script src="https://makio135.com/webserial/client/webserial.min.js"></script>
     ```
