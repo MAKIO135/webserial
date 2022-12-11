@@ -36,7 +36,7 @@
   },
   "dependencies": {
     "@serialport/parser-readline": "^8.0.6",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "serialport": "^8.0.6",
     "socket.io": "^2.3.0"
   }
